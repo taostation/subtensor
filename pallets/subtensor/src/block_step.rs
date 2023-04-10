@@ -164,6 +164,9 @@ impl<T: Config> Pallet<T> {
         TotalStake::<T>::put( TotalStake::<T>::get().saturating_add( increment ) );
         TotalIssuance::<T>::put( TotalIssuance::<T>::get().saturating_add( increment ) );
 
+        // --- Emit the stake increase event.
+        log::info!("StakeIncreased( coldkey:{:?}, hotkey:{:?}, increment:{:?} )", coldkey, hotkey, increment );
+        Self::deposit_event( Event::StakeIncreased( coldkey.clone(), hotkey.clone(), increment ) );
     }
 
     // Decreases the stake on the cold - hot pairing by the decrement while decreasing other counters.
